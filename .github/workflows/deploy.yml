@@ -6,6 +6,13 @@ on:
       - master
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20.x'
   deploy:
     runs-on: ubuntu-latest
 
