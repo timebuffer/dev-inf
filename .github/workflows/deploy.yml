@@ -9,6 +9,17 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout name: CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
       - name: Checkout code
         uses: actions/checkout@v2
 
@@ -49,4 +60,14 @@ jobs:
             cd /var/www/timebuffer || exit
             git pull origin master || exit
             npm install || exit
-            pm2 restart all || exit
+            #pm2 restart all || exit
+            # Ensure PM2 is installed
+            pm2 -v || npm install -g pm2 || exit
+
+            # Start or restart the application using PM2
+            pm2 describe server > /dev/null
+            if [ $? -eq 0 ]; then
+              pm2 restart server || exit
+            else
+              pm2 start server.js --name server || exit
+            fi
