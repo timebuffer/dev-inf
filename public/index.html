@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Project Data Editor</title>
+    <script>
+        async function fetchData() {
+            const response = await fetch('/projects');
+            const data = await response.json();
+            document.getElementById('data').value = JSON.stringify(data, null, 2);
+        }
+
+        async function saveData() {
+            const data = JSON.parse(document.getElementById('data').value);
+            await fetch('/projects', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+        }
+
+        window.onload = fetchData;
+    </script>
+</head>
+<body>
+    <h1>Project Data Editor</h1>
+    <textarea id="data" rows="20" cols="100"></textarea><br>
+    <button onclick="saveData()">Save</button>
+</body>
+</html>
